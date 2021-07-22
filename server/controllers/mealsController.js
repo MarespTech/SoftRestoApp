@@ -3,11 +3,12 @@ const { validationResult } = require("express-validator");
 
 exports.getMeals = async ( req, res ) => {
     try {
-        const meals = await Meals.findAll({ where: { food_active: 1 }});
+        const meals = await Meals.findAll({ where: { meal_active: 1 }});
 
         res.json({
             ok: true,
-            data: meals
+            data: meals,
+            message: "Meal added successfully"
         });
 
     } catch (error) {

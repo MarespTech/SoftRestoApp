@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter  as Router, Route, Switch  } from 'react-router-dom';
+
+import CategoryState from './context/category/categoryState';
+import IngredientState from './context/ingredient/ingredientState';
+
+import Dashboard from './components/Dashboard';
+import Categories from "./components/Categories";
+import Ingredients from "./components/Ingredients";
+import Meals from "./components/Meals";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CategoryState>
+      <IngredientState>
+        <Router>
+          <Switch>
+            <Route exact path={"/"} component={Dashboard}/>
+            <Route exact path={"/categories"} component={Categories}/>
+            <Route exact path={"/ingredients"} component={Ingredients}/>
+            <Route exact path={"/meals"} component={Meals}/>
+          </Switch>
+        </Router>
+      </IngredientState>
+    </CategoryState>
   );
 }
 

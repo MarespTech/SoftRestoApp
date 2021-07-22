@@ -7,7 +7,8 @@ exports.getIngredients = async ( req, res ) => {
 
         res.json({
             ok: true,
-            data: ingredients
+            data: ingredients,
+            message: "Ingredient added successfully"
         });
 
     } catch (error) {

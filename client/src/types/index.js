@@ -1,0 +1,20 @@
+export const CATEGORY_ADD = "CATEGORY_ADD";
+export const CATEGORY_EDIT = "CATEGORY_EDIT";
+export const CATEGORY_DELETE = "CATEGORY_DELETE";
+export const CATEGORY_GET = "CATEGORY_GET";
+export const CATEGORY_SELECT = "CATEGORY_SELECT";
+
+export const MEAL_ADD = "MEAL_ADD";
+export const MEAL_EDIT = "MEAL_EDIT";
+export const MEAL_DELETE = "MEAL_DELETE";
+export const MEAL_GET = "MEAL_GET";
+export const MEAL_SELECT = "MEAL_SELECT";
+
+export const INGREDIENT_ADD = "INGREDIENT_ADD";
+export const INGREDIENT_EDIT = "INGREDIENT_EDIT";
+export const INGREDIENT_DELETE = "INGREDIENT_DELETE";
+export const INGREDIENT_GET = "INGREDIENT_GET";
+export const INGREDIENT_SELECT = "INGREDIENT_SELECT";
+
+export const ERROR_CREATE = "ERROR_CREATE";
+export const ERROR_CLEAN = "ERROR_CLEAN";

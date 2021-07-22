@@ -34,7 +34,8 @@ exports.addCategory = async ( req, res ) => {
 
         res.json({
             ok: true,
-            data: category
+            data: category,
+            message: "Category added successfully"
         });
     } catch (error) {
         res.status(500).json({
