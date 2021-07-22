@@ -4,11 +4,12 @@ import IngredientContext from './ingredientContext';
 import IngredientReducer from './ingredientReducer';
 
 import {
-    CATEGORY_ADD,
-    CATEGORY_EDIT,
-    CATEGORY_DELETE,
-    CATEGORY_GET,
-    CATEGORY_SELECT,
+    INGREDIENT_ADD,
+    INGREDIENT_EDIT,
+    INGREDIENT_DELETE,
+    INGREDIENT_GET,
+    INGREDIENT_SELECT,
+    INGREDIENT_UNSELECTED,
     ERROR_CREATE,
     ERROR_CLEAN
 } from "../../types";
@@ -24,9 +25,9 @@ const IngredientState = props => {
 
     const getIngredients = async () => {
         try {
-            const result = await axiosClient.get("/api/categories");
+            const result = await axiosClient.get("/api/ingredients");
             dispatch({
-                type: CATEGORY_GET,
+                type: INGREDIENT_GET,
                 payload: result.data.data
             })
         } catch (error) {
@@ -44,22 +45,81 @@ const IngredientState = props => {
 
     const selectIngredient = id => {
         dispatch({
-            type: CATEGORY_SELECT,
+            type: INGREDIENT_SELECT,
             payload: id
-        })
+        });
     }
 
-    const addIngredient = async (category) => {
+    const unselectIngredient = () => {
+        dispatch({
+            type: INGREDIENT_UNSELECTED,
+        });
+    }
+
+    const addIngredient = async ingredient => {
         try {
-            const result = await axiosClient.post("/api/categories", category);
+            if(ingredient.ingredient_image_media) {
+                const image = new FormData();
+                image.append("file", ingredient.ingredient_image_media);
+
+                const resultImage = await axiosClient.post("/api/upload/ingredients", image, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+
+                ingredient.ingredient_image = resultImage.data.data.url
+            }
+
+            const result = await axiosClient.post("api/ingredients", ingredient);
             dispatch({
-                type: CATEGORY_ADD,
+                type: INGREDIENT_ADD,
                 payload: {
-                    category: result.data.data,
+                    ingredient: result.data.data,
                     message: {
-                        message: result.data.message,
-                        type: "success",
-                        title: "Success"
+                        type: 'success',
+                        title: 'Success',
+                        message: result.data.message
+                    }
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: ERROR_CREATE,
+                payload: {
+                    message: {
+                        message: error.response.data.message,
+                        title: "Error",
+                        type: "error"
+                    }
+                }
+            });
+        }
+    }
+
+    const editIngredient = async ingredient => {
+        const { ingredient_id } = ingredient;
+
+        try {
+            if(ingredient.ingredient_image_media) {
+                const image = new FormData();
+                image.append("file", ingredient.ingredient_image_media);
+
+                const resultImage = await axiosClient.post("/api/upload/ingredients", image, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+
+                ingredient.ingredient_image = resultImage.data.data.url
+            }
+
+            const result = await axiosClient.put(`api/ingredients/${ingredient_id}`, ingredient);
+            dispatch({
+                type: INGREDIENT_EDIT,
+                payload: {
+                    ingredient: ingredient,
+                    message: {
+                        type: 'success',
+                        title: 'Success',
+                        message: result.data.message
                     }
                 }
             });
@@ -68,47 +128,21 @@ const IngredientState = props => {
             dispatch({
                 type: ERROR_CREATE,
                 payload: {
-                    message: error.response.data.message,
-                    type: "error",
-                    title: "Error"
-                }
-            });
-        }
-    }
-
-    const editIngredient = async (category) => {
-        try {
-            const result = await axiosClient.put(`/api/categories/${category.category_id}`, category);
-            dispatch({
-                type: CATEGORY_EDIT,
-                payload: {
-                    category,
                     message: {
-                        message: result.data.message,
-                        type: "success",
-                        title: "Success"
+                        message: error.response.data.message,
+                        title: "Error",
+                        type: "error"
                     }
                 }
             });
-        } catch (error) {
-            console.log(error);
-            console.log(error.response);
-            dispatch({
-                type: ERROR_CREATE,
-                payload: {
-                    message: error.response.data.message,
-                    type: "error",
-                    title: "Error"
-                }
-            });
         }
     }
 
-    const deleteIngredient = async (id) => {
+    const deleteIngredient = async id => {
         try {
-            const result = await axiosClient.delete(`/api/categories/${id}`);
+            const result = await axiosClient.delete(`/api/ingredients/${id}`);
             dispatch({
-                type: CATEGORY_DELETE,
+                type: INGREDIENT_DELETE,
                 payload: {
                     id,
                     message: {
@@ -120,13 +154,14 @@ const IngredientState = props => {
             })
         } catch (error) {
             console.log(error);
-            console.log(error.response);
             dispatch({
                 type: ERROR_CREATE,
                 payload: {
-                    message: error.response.data.message,
-                    type: "error",
-                    title: "Error"
+                    message: {
+                        message: error.response.data.message,
+                        title: "Error",
+                        type: "error"
+                    }
                 }
             });
         }
@@ -145,10 +180,11 @@ const IngredientState = props => {
                 ingredient_selected: state.ingredient_selected,
                 message: state.message,
                 getIngredients,
+                selectIngredient,
+                unselectIngredient,
                 addIngredient,
                 editIngredient,
                 deleteIngredient,
-                selectIngredient,
                 cleanError
             }}
         >

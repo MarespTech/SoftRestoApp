@@ -3,6 +3,7 @@ import { BrowserRouter  as Router, Route, Switch  } from 'react-router-dom';
 
 import CategoryState from './context/category/categoryState';
 import IngredientState from './context/ingredient/ingredientState';
+import MealState from './context/meal/mealState';
 
 import Dashboard from './components/Dashboard';
 import Categories from "./components/Categories";
@@ -14,14 +15,16 @@ function App() {
   return (
     <CategoryState>
       <IngredientState>
-        <Router>
-          <Switch>
-            <Route exact path={"/"} component={Dashboard}/>
-            <Route exact path={"/categories"} component={Categories}/>
-            <Route exact path={"/ingredients"} component={Ingredients}/>
-            <Route exact path={"/meals"} component={Meals}/>
-          </Switch>
-        </Router>
+        <MealState>
+          <Router>
+            <Switch>
+              <Route exact path={"/"} component={Dashboard}/>
+              <Route exact path={"/categories"} component={Categories}/>
+              <Route exact path={"/ingredients"} component={Ingredients}/>
+              <Route exact path={"/meals"} component={Meals}/>
+            </Switch>
+          </Router>
+        </MealState>
       </IngredientState>
     </CategoryState>
   );

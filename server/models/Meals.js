@@ -16,8 +16,11 @@ exports.Meals = db.define("meals", {
     meal_description: {
         type: Sequelize.STRING
     },
-    meal_picture: {
-        type: Sequelize.STRING
+    meal_category: {
+        type: Sequelize.INTEGER
+    },
+    meal_recipe: {
+        type: Sequelize.INTEGER
     },
     meal_rating: {
         type: Sequelize.INTEGER

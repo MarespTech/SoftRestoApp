@@ -19,6 +19,9 @@ import Title from './includes/Title';
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        "& main": {
+            height: "100%"
+        }
     },
     appBarSpacer: theme.mixins.toolbar,
     container: {
@@ -163,7 +166,7 @@ const Categories = () => {
 
     const onDelete = (id, name) => {
         Swal.fire({
-            title: `Are you sure you want to delete ${name}?`,
+            title: `Are you sure you want to delete "${name}"?`,
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
@@ -193,7 +196,7 @@ const Categories = () => {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <Paper className={classes.paper}>
                                 <Title>
                                     { !editMode ? "Add" : "Edit" } Category 
@@ -233,7 +236,7 @@ const Categories = () => {
                             </Paper>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={8} lg={8}>
+                        <Grid item xs={12} sm={12} md={9} lg={9}>
                             <MUIDataTable
                                 title={<Title>Categories</Title>}
                                 data={category_list}

@@ -10,6 +10,9 @@ exports.Ingredients = db.define("ingredients", {
     ingredient_name: {
         type: Sequelize.STRING
     },
+    ingredient_measure: {
+        type: Sequelize.STRING
+    },
     ingredient_stock: {
         type: Sequelize.INTEGER
     },

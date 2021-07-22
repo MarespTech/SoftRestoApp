@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
-        width: 300,
+        width: 200,
         display: 'none',
         [theme.breakpoints.up('md')]: {
             display: 'flex',

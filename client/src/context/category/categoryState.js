@@ -117,7 +117,7 @@ const CategoryState = props => {
                         title: "Success"
                     }
                 }
-            })
+            });
         } catch (error) {
             console.log(error);
             console.log(error.response);

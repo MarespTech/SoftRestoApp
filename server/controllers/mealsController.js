@@ -1,9 +1,11 @@
 const { Meals } = require("../models/Meals");
 const { validationResult } = require("express-validator");
+const { Op, QueryTypes } = require("sequelize");
+const db = require('../config/db');
 
 exports.getMeals = async ( req, res ) => {
     try {
-        const meals = await Meals.findAll({ where: { meal_active: 1 }});
+        const meals = await db.query("SELECT meals.*, categories.category_name FROM `meals` INNER JOIN categories ON meals.meal_category = categories.category_id WHERE meal_active = 1", { type: QueryTypes.SELECT });
 
         res.json({
             ok: true,
@@ -68,6 +70,17 @@ exports.editMeal = async ( req, res ) => {
             });
         }
 
+        const oldImage = meal.meal_image;
+        const newImage = req.body.meal_image;
+
+        if(oldImage !== newImage && oldImage !== "/uploads/no-image.jpg") {
+            try {
+                fs.unlinkSync(`../client/public/${oldImage}`);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
         await Meals.update( req.body, {
             where: { meal_id }
         });
@@ -98,9 +111,12 @@ exports.removeMeal = async ( req, res ) => {
             });
         }
 
-        meal.meal_active = 0;
+        const udpateMeal = {
+            ...meal,
+            meal_active: 0
+        }
 
-        await Meals.update( meal, {
+        await Meals.update( udpateMeal, {
             where: { meal_id }
         });
 

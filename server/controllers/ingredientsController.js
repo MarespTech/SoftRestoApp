@@ -1,5 +1,6 @@
 const { Ingredients } = require("../models/Ingredients");
 const { validationResult } = require("express-validator");
+const fs = require('fs')
 
 exports.getIngredients = async ( req, res ) => {
     try {
@@ -74,6 +75,17 @@ exports.editIngredient = async ( req, res ) => {
             });
         }
 
+        const oldImage = ingredient.ingredient_image;
+        const newImage = req.body.ingredient_image;
+
+        if(oldImage !== newImage && oldImage !== "/uploads/no-image.jpg") {
+            try {
+                fs.unlinkSync(`../client/public/${oldImage}`);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
         await Ingredients.update( req.body, {
             where: { ingredient_id }
         });
@@ -107,9 +119,12 @@ exports.removeIngredient = async ( req, res ) => {
             });
         }
 
-        ingredient.ingredient_active = 0;
+        const udpateIngredient = {
+            ...ingredient,
+            ingredient_active: 0
+        }
 
-        await Ingredients.update(ingredient, {
+        await Ingredients.update(udpateIngredient, {
             where: { ingredient_id }
         });
 
