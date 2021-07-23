@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import NumberFormat from 'react-number-format';
 import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,7 +7,8 @@ import { blue, amber, yellow } from '@material-ui/core/colors';
 import { Container, Paper, Grid, Button, 
          IconButton, TextField, TableCell, 
          TableRow, Tooltip, Avatar, Select, 
-         MenuItem, InputLabel, FormHelperText, FormControl } from '@material-ui/core';
+         MenuItem, InputLabel, FormHelperText, 
+         FormControl, Modal  } from '@material-ui/core';
 
 import SaveIcon from '@material-ui/icons/Save';
 import EditIcon from '@material-ui/icons/Edit';
@@ -107,13 +107,32 @@ const useStyles = makeStyles(theme => ({
 
     avatar: {
         width: 100,
-        height: 100
+        height: 100,
+        cursor: "pointer"
     },
     rateIcon: {
         color: yellow[700],
         fontSize: 22,
         fontWeight: "bold",
         display: "inline"
+    },
+    imageModal: {
+        width: 300,
+        height: 300,
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        position: 'absolute',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        border: "none",
+        borderRadius: 15,
+
+        "& img": {
+            width: "100%",
+            height: "100%",
+            
+        }
     }
 
 }));
@@ -137,6 +156,11 @@ const Meal = () => {
         category_name: null
     });
     const [ editMode, saveEditMode ] = useState(false);
+    const [ modal, setModal] = React.useState({
+        isOpen: false,
+        image: null,
+        alt: null
+    });
 
     useEffect(() => {
         getMeals();
@@ -163,6 +187,14 @@ const Meal = () => {
             saveMeal({
                 ...meal_selected,
                 meal_image_media: null
+            });
+        } else {
+            saveMeal({ 
+                meal_name: "",
+                meal_cost: 0,
+                meal_description: "",
+                meal_image: "/uploads/no-image.jpg",
+                meal_image_media: null 
             });
         }
         
@@ -272,7 +304,7 @@ const Meal = () => {
                     <TableCell>{ convertStars(data[5]) }</TableCell>
                     <TableCell>{data[6]} votes</TableCell>
                     <TableCell>
-                        <Avatar className={classes.avatar} alt={data[0]} src={data[7]} />
+                        <Avatar className={classes.avatar} alt={data[0]} src={data[7]} onClick={() => { handleOpenModal(data[7], data[0]) }}/>
                     </TableCell>
                     <TableCell>
                         <Tooltip title="Edit" placement="top">
@@ -315,12 +347,28 @@ const Meal = () => {
         return category ? category.category_name : "No Category"
     }
 
+    const handleOpenModal = (image, alt) => {
+        setModal({
+            isOpen: true,
+            image,
+            alt
+        });
+    };
+    
+      const handleCloseModal = () => {
+        setModal({
+            isOpen: false,
+            image: null
+        });
+    };
+
     const handleChange = e => {
         e.preventDefault();
 
         saveMeal({
             ...meal,
             [e.target.name]: e.target.value,
+            category_name: getCategoryName(meal_category)
         });
     }
 
@@ -395,6 +443,14 @@ const Meal = () => {
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
+                    <Modal
+                        open={modal.isOpen}
+                        onClose={handleCloseModal}
+                    >
+                        <div className={classes.imageModal}>
+                            <img alt={modal.alt} src={modal.image}/>
+                        </div>
+                    </Modal>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Paper className={classes.paper}>

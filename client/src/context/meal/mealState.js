@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer } from 'react';
 import axiosClient from '../../config/axios';
 import MealContext from './mealContext';
 import MealReducer from './mealReducer';
@@ -70,6 +70,7 @@ const MealState = props => {
             }
 
             const result = await axiosClient.post("/api/meals", meal);
+            console.log(meal);
             dispatch({
                 type: MEAL_ADD,
                 payload: {

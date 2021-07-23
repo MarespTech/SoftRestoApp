@@ -14,7 +14,8 @@ const IngredientReducer = (state, action) => {
         case INGREDIENT_GET:
             return {
                 ...state,
-                ingredient_list: action.payload
+                ingredient_list: action.payload,
+                ingredient_selected: null
             }
         case INGREDIENT_SELECT:
             return {

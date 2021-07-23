@@ -14,7 +14,8 @@ const MealReducer = (state, action) => {
         case MEAL_GET:
             return {
                 ...state,
-                meal_list: action.payload
+                meal_list: action.payload,
+                meal_selected: null
             }
         case MEAL_SELECT:
             return {

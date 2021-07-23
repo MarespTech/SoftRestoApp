@@ -19,6 +19,7 @@
     "react-number-format": "^4.6.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-to-print": "^2.12.6",
     "recharts": "^2.0.10",
     "sweetalert2": "^11.0.19",
     "web-vitals": "^1.1.2"

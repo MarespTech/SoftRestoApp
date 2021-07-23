@@ -26,6 +26,8 @@ app.use( fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }) );
 const port = process.env.PORT || 4000;
 
 // Importar Rutas
+app.use("/api/orders", require("./routes/orders"));
+// app.use("/api/votes", require("./routes/votes"));
 app.use("/api/ingredients", require("./routes/ingredients"));
 app.use("/api/categories", require("./routes/categories"));
 app.use("/api/meals", require("./routes/meals"));

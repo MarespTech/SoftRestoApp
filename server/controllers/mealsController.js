@@ -2,6 +2,7 @@ const { Meals } = require("../models/Meals");
 const { validationResult } = require("express-validator");
 const { Op, QueryTypes } = require("sequelize");
 const db = require('../config/db');
+const fs = require("fs");
 
 exports.getMeals = async ( req, res ) => {
     try {

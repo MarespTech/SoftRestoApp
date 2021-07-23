@@ -108,6 +108,27 @@ const Dashboard = () => {
         return ` ${today.getDate()} ${months[today.getMonth()]}, ${today.getFullYear()}`;
     }
 
+    const convertStars = stars => {
+        const starsHtml = [];
+        let missStars = 5 - stars;
+        for(let i = 1; i < stars; i++) {
+            starsHtml.push(<StarIcon className={classes.rateIcon}/>);
+        }
+
+        if(stars%1 > 0) {
+            starsHtml.push(<StarHalfIcon className={classes.rateIcon}/>);
+        }
+
+        for(let i = 1; i < missStars; i++) {
+            starsHtml.push(<StarBorderIcon className={classes.rateIcon}/>);
+        }
+
+        if(missStars === 5) {
+            starsHtml.push(<StarBorderIcon className={classes.rateIcon}/>);
+        }
+
+        return starsHtml;
+    }
 
 
     return (

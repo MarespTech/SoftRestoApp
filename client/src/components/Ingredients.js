@@ -4,7 +4,7 @@ import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { blue, amber } from '@material-ui/core/colors';
-import { Container, Paper, Grid, Button, IconButton, TextField, TableCell, TableRow, Tooltip, Avatar } from '@material-ui/core';
+import { Container, Paper, Grid, Button, IconButton, TextField, TableCell, TableRow, Tooltip, Avatar, Modal } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -91,7 +91,25 @@ const useStyles = makeStyles(theme => ({
 
     avatar: {
         width: 100,
-        height: 100
+        height: 100,
+        cursor: "pointer"
+    },
+    imageModal: {
+        width: 300,
+        height: 300,
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        position: 'absolute',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        border: "none",
+        borderRadius: 15,
+
+        "& img": {
+            width: "100%",
+            height: "100%",
+        }
     }
 
 }));
@@ -112,6 +130,11 @@ const Ingredients = () => {
         ingredient_image_media: null 
     });
     const [ editMode, saveEditMode ] = useState(false);
+    const [ modal, setModal] = React.useState({
+        isOpen: false,
+        image: null,
+        alt: null
+    });
 
     useEffect(() => {
         getIngredients();
@@ -139,6 +162,17 @@ const Ingredients = () => {
         if(ingredient_selected) {
             saveIngredient({
                 ...ingredient_selected,
+                ingredient_image_media: null
+            });
+        } else {
+            saveIngredient({ 
+                ingredient_name: "",
+                ingredient_measure: "",
+                ingredient_stock: 0,
+                ingredient_min_stock: 0,
+                ingredient_max_stock: 1000,
+                ingredient_point_reorder: 0,
+                ingredient_image: "/uploads/no-image.jpg",
                 ingredient_image_media: null
             });
         }
@@ -234,7 +268,7 @@ const Ingredients = () => {
                     <TableCell>{ data[4] }</TableCell>
                     <TableCell>{ data[5] }</TableCell>
                     <TableCell>
-                        <Avatar className={classes.avatar} alt={data[0]} src={data[6]} />
+                        <Avatar className={classes.avatar} alt={data[0]} src={data[6]} onClick={() => { handleOpenModal(data[6], data[0]) }}/>
                     </TableCell>
                     <TableCell>
                         <Tooltip title="Edit" placement="top">
@@ -248,6 +282,21 @@ const Ingredients = () => {
             )
         }
     }
+
+    const handleOpenModal = (image, alt) => {
+        setModal({
+            isOpen: true,
+            image,
+            alt
+        });
+    };
+    
+      const handleCloseModal = () => {
+        setModal({
+            isOpen: false,
+            image: null
+        });
+    };
 
     const handleChange = e => {
         e.preventDefault();
@@ -325,6 +374,14 @@ const Ingredients = () => {
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
+                    <Modal
+                        open={modal.isOpen}
+                        onClose={handleCloseModal}
+                    >
+                        <div className={classes.imageModal}>
+                            <img alt={modal.alt} src={modal.image}/>
+                        </div>
+                    </Modal>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={12} md={3} lg={3}>
                             <Paper className={classes.paper}>
