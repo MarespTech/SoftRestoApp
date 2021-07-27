@@ -70,7 +70,6 @@ const MealState = props => {
             }
 
             const result = await axiosClient.post("/api/meals", meal);
-            console.log(meal);
             dispatch({
                 type: MEAL_ADD,
                 payload: {

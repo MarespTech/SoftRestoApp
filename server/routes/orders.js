@@ -13,6 +13,10 @@ router.get("/fiveLastOrders", ordersController.getLastFiveOrders);
 
 router.get("/dashboardData", ordersController.getDashboardData);
 
+router.get("/historialOrders", ordersController.getHistorialOrders);
+
+router.get("/charts", ordersController.getCharts);
+
 router.post("/",
     [
         check("order_historial_payment", "The payment method is required").not().isEmpty(),

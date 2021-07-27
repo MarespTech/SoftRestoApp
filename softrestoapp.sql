@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2021 at 01:02 AM
+-- Generation Time: Jul 28, 2021 at 12:56 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -68,10 +68,9 @@ CREATE TABLE `ingredients` (
 --
 
 INSERT INTO `ingredients` (`ingredient_id`, `ingredient_name`, `ingredient_measure`, `ingredient_stock`, `ingredient_min_stock`, `ingredient_max_stock`, `ingredient_point_reorder`, `ingredient_image`, `ingredient_active`) VALUES
-(1, 'Tortillas', 'Package', 4, 2, 8, 2, 'uploads/ingredients/653-tortillas-maiz.jpg', 1),
+(1, 'Tortillas', 'Package', 3, 2, 8, 2, 'uploads/ingredients/653-tortillas-maiz.jpg', 1),
 (2, 'Aceite', 'Bottle', 20, 10, 50, 15, 'uploads/ingredients/257-aceite.jpg', 1),
-(3, 'Zanahoria', 'Pz', 5, 5, 50, 5, 'uploads/ingredients/802-download.jpg', 1),
-(4, 'Zanahoria', 'Pz', 10, 5, 50, 5, 'uploads/ingredients/221-download.jpg', 0);
+(3, 'Zanahoria', 'Pz', 5, 5, 50, 5, 'uploads/ingredients/802-download.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -114,6 +113,30 @@ INSERT INTO `meals` (`meal_id`, `meal_name`, `meal_cost`, `meal_description`, `m
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `message_id` int(11) NOT NULL,
+  `message_title` varchar(100) NOT NULL,
+  `message_body` text NOT NULL,
+  `message_from` varchar(150) NOT NULL,
+  `message_date` datetime NOT NULL,
+  `message_seen` tinyint(1) NOT NULL DEFAULT 0,
+  `message_seen_date` datetime NOT NULL,
+  `message_active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`message_id`, `message_title`, `message_body`, `message_from`, `message_date`, `message_seen`, `message_seen_date`, `message_active`) VALUES
+(1, 'a', 'a', 'a', '2021-07-28 00:23:13', 0, '2021-07-28 00:23:13', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders_historial`
 --
 
@@ -130,10 +153,11 @@ CREATE TABLE `orders_historial` (
 --
 
 INSERT INTO `orders_historial` (`order_historial_id`, `order_historial_date`, `order_historial_payment`, `order_historial_amount`, `order_historial_active`) VALUES
-(4, '2021-07-21 15:34:34', 'Money', 200, 0),
-(5, '2021-07-23 15:40:52', 'Money', 200, 1),
-(6, '2021-07-23 15:42:45', 'Money', 200, 1),
-(7, '2021-07-22 15:47:37', 'Money', 200, 1);
+(4, '2021-07-28 15:34:34', 'Money', 300, 1),
+(5, '2021-07-27 16:40:52', 'Money', 200, 1),
+(6, '2021-07-27 17:42:45', 'Money', 450, 1),
+(7, '2021-07-27 19:47:37', 'Money', 120, 1),
+(9, '2021-07-27 15:34:34', 'Money', 300, 1);
 
 -- --------------------------------------------------------
 
@@ -153,11 +177,11 @@ CREATE TABLE `orders_meals` (
 --
 
 INSERT INTO `orders_meals` (`order_meal_id`, `order_meal_historial`, `order_meal_qty`, `order_meal`) VALUES
-(13, 4, 2, 5),
+(13, 4, 3, 5),
 (14, 4, 1, 14),
 (15, 4, 3, 18),
 (16, 4, 1, 19),
-(17, 5, 1, 5),
+(17, 5, 2, 5),
 (18, 5, 1, 14),
 (19, 5, 1, 18),
 (20, 5, 1, 19),
@@ -218,6 +242,12 @@ ALTER TABLE `meals`
   ADD PRIMARY KEY (`meal_id`);
 
 --
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`message_id`);
+
+--
 -- Indexes for table `orders_historial`
 --
 ALTER TABLE `orders_historial`
@@ -260,10 +290,16 @@ ALTER TABLE `meals`
   MODIFY `meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `orders_historial`
 --
 ALTER TABLE `orders_historial`
-  MODIFY `order_historial_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `order_historial_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `orders_meals`

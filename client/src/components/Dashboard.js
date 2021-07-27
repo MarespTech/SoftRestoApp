@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,8 +13,9 @@ import Navbar from './includes/Navbar';
 import Sidebar from './includes/Sidebar';
 import Title from './includes/Title';
 import DashboardChart from './dashboard/DashboardChart';
-// import DashboardChart2 from './dashboard/DashboardChart2';
 import DashboardHistorial from './dashboard/DashboardHistorial';
+
+import OrderContext from '../context/order/orderContext';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -80,26 +81,17 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const data = [
-    {time: '09:00', amount: 30},
-    {time: '10:00', amount: 300},
-    {time: '11:00', amount: 600},
-    {time: '12:00', amount: 500},
-    {time: '13:00', amount: 150},
-    {time: '14:00', amount: 200},
-    {time: '15:00', amount: 240},
-    {time: '16:00', amount: 200},
-    {time: '17:00', amount: 50},
-    {time: '18:00', amount: 190},
-    {time: '19:00', amount: 400},
-    {time: '20:00', amount: 120},
-    {time: '21:00', amount: undefined},
-  ];
-
 const Dashboard = () => {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const fixedHeightGraph = clsx(classes.paper, classes.graphHeigh);
+    const orderContext = useContext(OrderContext);
+
+    const { mealMostRequested, mealMostRating, todayOrders, ordersHistorial, chartDashboard, getDashboardData } = orderContext;
+
+    useEffect(() => {
+        getDashboardData();
+    }, []);
 
     const getCurrentDate = () => {
         const today = new Date();
@@ -147,7 +139,7 @@ const Dashboard = () => {
                             <Paper className={fixedHeightPaper}>
                                 <Title>Most requested meal of the week</Title>
                                 <Typography component="p" variant="h4">
-                                    Green Chilaquiles
+                                    { mealMostRequested ? mealMostRequested.name : "No info" }
                                 </Typography>
                                 <Typography color="textSecondary" className={classes.depositContext}>
                                     on {getCurrentDate()}
@@ -155,14 +147,18 @@ const Dashboard = () => {
                                 <div className={classes.large}>
                                     <div className={classes.moreData}>
                                         <Typography component="p" variant="p">
-                                            Times requested: 45 Times
+                                            Times requested: {mealMostRequested ? mealMostRequested.times_requested : 0} Times
                                         </Typography>
                                         <Typography component="p" variant="p">
-                                            Total percentage: 45%
+                                            Total percentage: { mealMostRequested ? mealMostRequested.times_requested_percent.toFixed(2) : 0 }%
                                         </Typography>
 
                                     </div>
-                                    <Avatar alt="Chilaquiles c/pollo" src="/uploads/meals/775-chilaquiles.jpg" className={classes.avatarLarge} />
+                                    <Avatar 
+                                        alt={ mealMostRequested ? mealMostRequested.name : "No info" } 
+                                        src={ mealMostRequested ? mealMostRequested.image : "/uploads/no-image.jpg" } 
+                                        className={classes.avatarLarge} 
+                                    />
                                 </div>
                             </Paper>
                         </Grid>
@@ -171,24 +167,24 @@ const Dashboard = () => {
                             <Paper className={fixedHeightPaper}>
                                 <Title>Most rating meal</Title>
                                 <Typography component="p" variant="h4">
-                                    Double Cheeseburger
+                                    { mealMostRating ? mealMostRating.name : "No info" }
                                 </Typography>
                                 <div className={classes.large}>
                                     <div className={classes.moreData}>
                                         <Typography component="p" variant="p">
-                                            Times requested: 23 Times
+                                            Times requested: { mealMostRating ? mealMostRating.times_requested : "No info" } Times
                                         </Typography>
                                         <Typography component="p" variant="p">
                                             Rate: 
-                                            <StarIcon className={classes.rateIcon}/>
-                                            <StarIcon className={classes.rateIcon}/>
-                                            <StarIcon className={classes.rateIcon}/>
-                                            <StarIcon className={classes.rateIcon}/>
-                                            <StarHalfIcon className={classes.rateIcon}/>
-                                            <small> (20 Rates)</small>
+                                            { mealMostRating ? convertStars(mealMostRating.rating) : convertStars(0) }
+                                            <small> ({ mealMostRating ? mealMostRating.votes : 0 } Rates)</small>
                                         </Typography>
                                     </div>
-                                    <Avatar alt="Double Cheeseburger" src="/uploads/meals/2113412-cheeseburguer.jpg" className={classes.avatarLarge} />
+                                    <Avatar 
+                                        alt={ mealMostRating ? mealMostRating.name : "No info" }
+                                        src={ mealMostRating ? mealMostRating.image : "/uploads/no-image.jpg" }
+                                        className={classes.avatarLarge} 
+                                    />
                                 </div>
                             </Paper>
                         </Grid>
@@ -199,10 +195,13 @@ const Dashboard = () => {
                                 <div className={classes.flexColumn}>
                                     <div>
                                         <Typography component="p" variant="h6">
-                                            Sales: $3,024.00
+                                            Sales: ${ todayOrders ? todayOrders.totalSales : 0}
                                         </Typography>
                                         <Typography component="p" variant="h6">
-                                            Orders: 28
+                                            Orders: { todayOrders ? todayOrders.totalOrders : 0 }
+                                        </Typography>
+                                        <Typography component="p" variant="h6">
+                                            Meals: { todayOrders ? todayOrders.total_meals : 0 }
                                         </Typography>
                                     </div>
                                     <div>
@@ -220,14 +219,16 @@ const Dashboard = () => {
                         <Grid item xs={12} md={9} lg={9}>
                             <Paper className={fixedHeightGraph}>
                                 <DashboardChart 
-                                    data={data}
+                                    data={chartDashboard}
                                 />
                             </Paper>
                         </Grid>
                                                 
                         <Grid item xs={12}>
                             <Paper className={classes.paper}>
-                                <DashboardHistorial/>
+                                <DashboardHistorial
+                                    ordersHistorial={ordersHistorial}
+                                />
                             </Paper>
                         </Grid>
                     </Grid>

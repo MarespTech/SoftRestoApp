@@ -33,6 +33,7 @@ app.use("/api/categories", require("./routes/categories"));
 app.use("/api/meals", require("./routes/meals"));
 app.use("/api/upload", require("./routes/upload"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/alerts", require("./routes/alerts"));
 app.use("/api/auth", require("./routes/auth"));
 
 // Run App

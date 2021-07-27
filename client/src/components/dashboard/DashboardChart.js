@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
-import { Typography } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, CartesianGrid, Tooltip  } from 'recharts';
 
 import Title from '../includes/Title';
@@ -39,8 +38,6 @@ const DashboardChart = ({data}) => {
                     <Tooltip />
                 </LineChart>
             </ResponsiveContainer>
-
-
         </Fragment>
      );
 }

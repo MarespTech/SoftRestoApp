@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
         cursor: "pointer",
         color: "#b5b5b5",
         margin: "auto 3px",
-        fontSize: "20px"
+        fontSize: "26px"
     },
     inputDiv: {
         [theme.breakpoints.down("sm")]: {

@@ -90,7 +90,7 @@ const MobileSidebar = ({username, isSidebarOpen, setIsSidebarOpen}) => {
                         <Link to="/sells-report" className={classes.links}>
                             <ListItem button className={classes.ListItem}>
                                 <AssessmentIcon/>
-                                <Box p={1} type="paragraph" color="inherit">Sells Report</Box>
+                                <Box p={1} type="paragraph" color="inherit">Sells Charts</Box>
                             </ListItem>
                         </Link>
                         <Link to="/sells-historial" className={classes.links}>

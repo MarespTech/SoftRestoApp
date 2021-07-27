@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Link } from "react-router-dom";
@@ -11,6 +11,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import MobileSidebar from './MobileSidebar';
+
+import AlertsContext from '../../context/alerts/alertsContext';
 
 const useStyles = makeStyles((theme) => ({
     customNavbar: {
@@ -48,9 +50,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
+    const alertsContext = useContext(AlertsContext);
+
+    const { notifications_navbar, messages_navbar, getNotificationsForNavbar } =alertsContext;
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [anchorEl, setAnchorEl] = useState()
+    const [anchorEl, setAnchorEl] = useState();
+
+    useEffect(() => {
+        getNotificationsForNavbar();
+    }, []);
     
     const logOut = () => {
         console.log("Log Out");
@@ -77,16 +87,27 @@ const Navbar = () => {
                     <div className={classes.sectionDesktop}>
                         <Link to="/mails" className={classes.iconLinks}>
                             <IconButton aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="secondary">
+                                { messages_navbar 
+                                    ?
+                                    <Badge badgeContent={messages_navbar.length } color="secondary">
+                                        <MailIcon />
+                                    </Badge>
+                                    :
                                     <MailIcon />
-                                </Badge>
+                                }
                             </IconButton>
                         </Link>
                         <Link to="/notifications" className={classes.iconLinks}>
                             <IconButton aria-label="show 17 new notifications" color="inherit">
-                                <Badge badgeContent={17} color="secondary">
+                                {
+                                    notifications_navbar && notifications_navbar.ingredientsiLowStock && notifications_navbar.ingredientsNoStock && notifications_navbar.ingredientsLowReorderPoint
+                                    ?
+                                    <Badge badgeContent={notifications_navbar.ingredientsiLowStock.length + notifications_navbar.ingredientsNoStock.length + notifications_navbar.ingredientsLowReorderPoint.length} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                    :
                                     <NotificationsIcon />
-                                </Badge>
+                                }
                             </IconButton>
                         </Link>
                         

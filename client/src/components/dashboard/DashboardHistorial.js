@@ -14,21 +14,7 @@ const useStyles = makeStyles( theme => ({
     }
 }));
 
-// Generate Order Data
-function createData(id, date, order, paymentMethod, amount) {
-    return { id, date, order, paymentMethod, amount };
-  }
-  
-  const rows = [
-    createData(0, '21 July, 2021 15:00', ["2x Green Chilaquiles", "1x Coffee", "1x Orange Juice"], 'Credit Card', 200),
-    createData(1, '21 July, 2021 14:30', ["1x Green Chilaquiles", "1x Scrumble Eggs", "2x Coffee"], 'Money', 215),
-    createData(2, '21 July, 2021 13:42', ["2x Green Chilaquiles w/Chicken", "1x Grand Slam", "2x Orange Juice", "1x Chocomilk"], 'Money', 253),
-    createData(3, '21 July, 2021 13:15', ["1x Grand Slam", "2x Omelette w/Cheese", "1x Pancakes", "3x Coffee", "1x Oreo Milkshake"], 'Credit Card', 654.39),
-    createData(4, '21 July, 2021 13:00', ["1x Chilaquiles w/Chicken", "1x Orange Juice"], 'Money', 110),
-  ];
-
-
-const DashboardHistorial = () => {
+const DashboardHistorial = ({ordersHistorial}) => {
     const classes = useStyles();
 
     return (
@@ -44,24 +30,24 @@ const DashboardHistorial = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map( row => (
-                        <TableRow key={row.id}>
-                            <TableCell>{row.date}</TableCell>
-                            <TableCell>
-                                <ul>
-                                    {row.order.map( meal => (
-                                        <li>{meal}</li>
-                                    ))}
-                                </ul>
-                            </TableCell>
-                            <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell>${row.amount}</TableCell>
-                        </TableRow>
-                    ))}
+                    {ordersHistorial.map( row => (
+                            <TableRow key={row.order_historial_id}>
+                                <TableCell>{row.order_historial_date} {row.order_historial_time}</TableCell>
+                                <TableCell>
+                                    <ul>
+                                        {row.meals.map( meal => (
+                                            <li>{meal}</li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>{row.order_historial_payment}</TableCell>
+                                <TableCell>${row.order_historial_amount}</TableCell>
+                            </TableRow>
+                        ))}
                 </TableBody>
             </Table>
             <div className={classes.seeMore}>
-                <Link color="primary" href="/see-historial">
+                <Link color="primary" href="/sells-historial">
                     See more orders
                 </Link>
             </div>
