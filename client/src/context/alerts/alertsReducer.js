@@ -2,6 +2,7 @@ import {
     ALERT_GET_NAVBAR_NUM_NOTIFICATIONS,
     ALERT_GET_NOTIFICATIONS,
     ALERT_GET_MAILS,
+    ALERT_SELECT_MAIL,
     ALERT_MARK_MESSAGE,
     ALERT_DELETE_MESSAGE,
     ERROR_CREATE,
@@ -24,17 +25,24 @@ const AlertsReducer = (state, action) => {
         case ALERT_GET_MAILS: 
             return {
                 ...state,
-                messages: action.payload
+                messages: action.payload.messages
+            }
+        case ALERT_SELECT_MAIL:
+            return {
+                ...state,
+                message_selected: state.messages.filter( message => message.message_id === action.payload)
             }
         case ALERT_MARK_MESSAGE:
             return {
                 ...state,
-                messages: action.payload
+                messages_navbar: action.payload.messagesUnseen,
+                messages: action.payload.messages
             }
         case ALERT_DELETE_MESSAGE:
             return {
                 ...state,
-                messages: action.payload.data,
+                messages_navbar: action.payload.messagesUnseen,
+                messages: action.payload.messages,
                 message: action.payload.message
             }
         case ERROR_CREATE: 

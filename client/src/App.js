@@ -13,6 +13,7 @@ import Ingredients from "./components/Ingredients";
 import Meals from "./components/Meals";
 import Historial from './components/Historial';
 import SellsCharts from './components/SellsCharts';
+import Messages from './components/Messages';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                   <Route exact path={"/meals"} component={Meals}/>
                   <Route exact path={"/sells-historial"} component={Historial}/>
                   <Route exact path={"/sells-report"} component={SellsCharts}/>
+                  <Route exact path={"/messages"} component={Messages}/>
                 </Switch>
               </Router>
             </MealState>

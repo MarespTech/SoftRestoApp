@@ -111,17 +111,18 @@ exports.deleteMessage = async ( req, res ) => {
 
 exports.checkNotifications = async ( req, res ) => {
     try {
-        const ingredientsiLowStock = await db.query("SELECT * FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_min_stock` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
-        const ingredientsLowReorderPoint = await db.query("SELECT * FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_point_reorder` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
-        const ingredientsNoStock = await Ingredients.findAll({ where: { ingredient_stock: 0} });
+        const ingredientsiLowStock = await db.query("SELECT *, 'is low of stock' AS 'message' FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_min_stock` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
+        const ingredientsLowReorderPoint = await db.query("SELECT *, 'is low of reorder point' AS 'message' FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_point_reorder` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
+        const ingredientsNoStock = await db.query("SELECT *, 'is out of stock' AS 'message' FROM `ingredients` WHERE `ingredient_stock` = 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
+        // const ingredientsNoStock = await Ingredients.findAll({ where: { ingredient_stock: 0} });
         
         res.json({
             ok: true,
-            data: {
-                ingredientsiLowStock,
-                ingredientsNoStock,
-                ingredientsLowReorderPoint
-            }
+            data: [
+                ...ingredientsiLowStock,
+                ...ingredientsNoStock,
+                ...ingredientsLowReorderPoint
+            ]
         });
     } catch (error) {
         console.log(error);
@@ -140,18 +141,18 @@ exports.checkNotificationsForNavbar = async ( req, res ) => {
                            { message_active: 1 }] 
                     } 
         });
-        const ingredientsiLowStock       = await db.query("SELECT * FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_min_stock` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
-        const ingredientsLowReorderPoint = await db.query("SELECT * FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_point_reorder` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
-        const ingredientsNoStock         = await Ingredients.findAll({ where: { ingredient_stock: 0} });
+        const ingredientsiLowStock = await db.query("SELECT *, 'is low of stock' AS 'message' FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_min_stock` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
+        const ingredientsLowReorderPoint = await db.query("SELECT *, 'is low of reorder point' AS 'message' FROM `ingredients` WHERE `ingredient_stock` <= `ingredient_point_reorder` AND `ingredient_stock` > 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
+        const ingredientsNoStock = await db.query("SELECT *, 'is out of stock' AS 'message' FROM `ingredients` WHERE `ingredient_stock` = 0 AND `ingredient_active` = 1;", { type: QueryTypes.SELECT });
         
         res.json({
             ok: true,
             data: {
-                notifications: {
-                    ingredientsiLowStock,
-                    ingredientsNoStock,
-                    ingredientsLowReorderPoint
-                },
+                notifications: [
+                    ...ingredientsiLowStock,
+                    ...ingredientsNoStock,
+                    ...ingredientsLowReorderPoint
+                ],
                 messages: messagesUnseen
             }
         });

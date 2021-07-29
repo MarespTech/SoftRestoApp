@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Badge, 
-         MenuItem, Menu, Avatar } from "@material-ui/core";
+         MenuItem, Menu, Avatar, Divider } from "@material-ui/core";
 import { lightBlue, green } from '@material-ui/core/colors';
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -11,6 +11,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import MobileSidebar from './MobileSidebar';
+import CustomMenuItem from './CustomMenuItem';
 
 import AlertsContext from '../../context/alerts/alertsContext';
 
@@ -27,12 +28,16 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         fontFamily: "'Lobster', cursive",
     },
-    menuButton: {
+    buttonMenu: {
       marginRight: theme.spacing(2),
       display: 'flex',
       [theme.breakpoints.up('md')]: {
         display: 'none',
       },
+    },
+    logo: {
+        color: "white",
+        textDecoration: "none"
     },
     links: {
         color: "black",
@@ -40,7 +45,20 @@ const useStyles = makeStyles((theme) => ({
     },
     iconLinks: {
         color: "white",
-        textDecoration: "none"
+        textDecoration: "none",
+        marginRight: 2
+    },
+    viewMore: {
+        textAlign: "center",
+        padding: "10px 8px 0",
+        "& a": {
+            textDecoration: "none",
+            color: theme.palette.primary.main
+        }
+    },
+    noAlerts: {
+        textAlign: "center",
+        padding: "8px 10px"
     },
     green: {
         color: theme.palette.getContrastText(green[600]),
@@ -52,9 +70,11 @@ const Navbar = () => {
     const classes = useStyles();
     const alertsContext = useContext(AlertsContext);
 
-    const { notifications_navbar, messages_navbar, getNotificationsForNavbar } =alertsContext;
+    const { notifications_navbar, messages_navbar, getNotificationsForNavbar, markMessageAsSeen } =alertsContext;
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [isMessagesOpen, setIsMessagesOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState();
 
@@ -72,7 +92,7 @@ const Navbar = () => {
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
-                        className={classes.menuButton}
+                        className={classes.buttonMenu}
                         color="inherit"
                         aria-label="open drawer"
                         onClick={() => setIsSidebarOpen(true)}
@@ -80,36 +100,48 @@ const Navbar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h4" color="inherit" noWrap className={classes.title}>
-                        SoftResto
+                        <Link to="/" className={classes.logo}>SoftResto</Link>
                     </Typography>
                     
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
-                        <Link to="/mails" className={classes.iconLinks}>
-                            <IconButton aria-label="show 4 new mails" color="inherit">
-                                { messages_navbar 
-                                    ?
-                                    <Badge badgeContent={messages_navbar.length } color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                    :
+                        <IconButton 
+                            aria-label="show 4 new mails" 
+                            color="inherit" 
+                            edge="end"
+                            aria-controls='primary-messages-menu'
+                            aria-haspopup="true"
+                            onClick={e => {setIsMessagesOpen(e.currentTarget); setAnchorEl(e.currentTarget);}}
+                            className={classes.iconLinks}
+                        >
+                            { messages_navbar 
+                                ?
+                                <Badge badgeContent={messages_navbar.length} color="secondary">
                                     <MailIcon />
-                                }
-                            </IconButton>
-                        </Link>
-                        <Link to="/notifications" className={classes.iconLinks}>
-                            <IconButton aria-label="show 17 new notifications" color="inherit">
-                                {
-                                    notifications_navbar && notifications_navbar.ingredientsiLowStock && notifications_navbar.ingredientsNoStock && notifications_navbar.ingredientsLowReorderPoint
-                                    ?
-                                    <Badge badgeContent={notifications_navbar.ingredientsiLowStock.length + notifications_navbar.ingredientsNoStock.length + notifications_navbar.ingredientsLowReorderPoint.length} color="secondary">
-                                        <NotificationsIcon />
-                                    </Badge>
-                                    :
+                                </Badge>
+                                :
+                                <MailIcon />
+                            }
+                        </IconButton>
+                        <IconButton 
+                            aria-label="show 17 new notifications" 
+                            color="inherit"
+                            edge="end"
+                            aria-controls='primary-notifications-menu'
+                            aria-haspopup="true"
+                            onClick={e => {setIsNotificationsOpen(e.currentTarget); setAnchorEl(e.currentTarget);}}
+                            className={classes.iconLinks}
+                        >
+                            {
+                                notifications_navbar.length > 0
+                                ?
+                                <Badge badgeContent={notifications_navbar.length} color="secondary">
                                     <NotificationsIcon />
-                                }
-                            </IconButton>
-                        </Link>
+                                </Badge>
+                                :
+                                <NotificationsIcon />
+                            }
+                        </IconButton>
                         
                         <IconButton
                             edge="end"
@@ -124,7 +156,77 @@ const Navbar = () => {
                         
                     </div>
                 </Toolbar>
+                
+                {/* Messages menu */}
+                <Menu
+                    isMenuOpen={isMessagesOpen}
+                    id='primary-messages-menu'
+                    anchorEl={anchorEl}
+                    getContentAnchorEl={null}
+                    keepMounted
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    open={isMessagesOpen}
+                    onClose={() => setIsMessagesOpen(false)}
+                >
+                    {
+                        messages_navbar.length > 0
+                        ?
+                            messages_navbar.map( item => (
+                                <CustomMenuItem
+                                    key={`mes${item.message_id}`}
+                                    type="message"
+                                    message={`New message: "${item.message_title}"`}
+                                    from={item.message_from}
+                                    id={item.message_id}
+                                    date={item.message_date}
+                                    markMessageAsSeen={markMessageAsSeen}
+                                />    
+                            ))
+                        : 
+                            <>
+                                <div className={classes.noAlerts}>
+                                    <span>There's no messages</span>
+                                </div>
+                                <Divider/>
+                            </>
+                    }
+                    <div className={classes.viewMore}>
+                        <Link to="/messages">View all messages</Link>
+                    </div>
+                </Menu>             
+                
+                {/* Notifications menu */}
+                <Menu
+                    isMenuOpen={isNotificationsOpen}
+                    id='primary-notifications-menu'
+                    anchorEl={anchorEl}
+                    getContentAnchorEl={null}
+                    keepMounted
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    className={classes.menuNotifications}
+                    open={isNotificationsOpen}
+                    onClose={() => setIsNotificationsOpen(false)}
+                >
+                        {
+                            notifications_navbar.length > 0 
+                            ?
+                                notifications_navbar.map( item => (
+                                    <CustomMenuItem
+                                        key={`ing${item.ingredient_id}`}
+                                        type="notification"
+                                        message={`${item.ingredient_name} ${item.message}`}
+                                    />    
+                                ))
+                            : 
+                                <div className={classes.noAlerts}>
+                                    <span>There's no notifications</span>
+                                </div>
+                        }
+                </Menu>
 
+                {/* Account menu */}
                 <Menu
                     isMenuOpen={isMenuOpen}
                     id='primary-search-account-menu'
@@ -141,6 +243,7 @@ const Navbar = () => {
                     </MenuItem>
                     <MenuItem onClick={logOut}>Log Out</MenuItem>
                 </Menu>
+                
                 <MobileSidebar 
                     isSidebarOpen={isSidebarOpen}
                     setIsSidebarOpen={setIsSidebarOpen}

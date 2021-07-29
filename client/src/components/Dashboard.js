@@ -1,9 +1,10 @@
 import React, { useEffect, useContext } from 'react';
+import { Link } from "react-router-dom";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { yellow } from '@material-ui/core/colors';
-import { Container, Paper, Grid, Typography, Link, Avatar } from '@material-ui/core';
+import { Container, Paper, Grid, Typography, Avatar } from '@material-ui/core';
 
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
@@ -68,6 +69,13 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         fontWeight: "bold",
         fontSize: 18,
+    },
+    seeMore: {
+        marginTop: theme.spacing(3),
+        "& a": {
+            textDecoration: "none",
+            color: theme.palette.primary.main
+        }
     },
     flexColumn: {
         height: "100%",
@@ -204,12 +212,12 @@ const Dashboard = () => {
                                             Meals: { todayOrders ? todayOrders.total_meals : 0 }
                                         </Typography>
                                     </div>
-                                    <div>
+                                    <div className={classes.seeMore}>
                                         <Typography color="textSecondary" className={classes.depositContext}>
                                             on {getCurrentDate()}
                                         </Typography>
                                         <div>
-                                            <Link color="primary" href="/sells-reports" >View historial</Link>
+                                            <Link to="/sells-reports" >View historial</Link>
                                         </div>
                                     </div>
                                 </div>

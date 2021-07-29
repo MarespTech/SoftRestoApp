@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 import Title from '../includes/Title';
@@ -8,6 +8,10 @@ import Title from '../includes/Title';
 const useStyles = makeStyles( theme => ({
     seeMore: {
         marginTop: theme.spacing(3),
+        "& a": {
+            textDecoration: "none",
+            color: theme.palette.primary.main
+        }
     },
     customTableHead: {
         fontWeight: "bold"
@@ -47,7 +51,7 @@ const DashboardHistorial = ({ordersHistorial}) => {
                 </TableBody>
             </Table>
             <div className={classes.seeMore}>
-                <Link color="primary" href="/sells-historial">
+                <Link to="/sells-historial">
                     See more orders
                 </Link>
             </div>
