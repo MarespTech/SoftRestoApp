@@ -15,7 +15,7 @@ const OrderState = props => {
     const initialState = {
         mealMostRequested: null,
         mealMostRating: null,
-        todayOrders: null,
+        todayOrders: [],
         chartDashboard: [],
         ordersHistorial: [],
         charts: []

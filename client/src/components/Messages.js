@@ -7,6 +7,8 @@ import { Container, Grid, Paper, Divider, Tooltip } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { blueGrey, grey } from '@material-ui/core/colors';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import Navbar from './includes/Navbar';
 import Sidebar from './includes/Sidebar';
 import Title from './includes/Title';
@@ -30,10 +32,6 @@ const useStyles = makeStyles(theme => ({
         height: '100vh',
         overflow: 'auto',
     },
-    rightLine: {
-        borderRight: `3px solid ${grey[300]}`
-    },
-
     // Cards
     paper: {
         padding: theme.spacing(2),
@@ -110,10 +108,14 @@ const useStyles = makeStyles(theme => ({
         fontWeight: "bold",
         marginBottom: 10
     },
+    messageBody: {
+        paddingTop: 5
+    },
 
     fullMessageBody: {
         padding: theme.spacing(4)
     }
+
 
 
 }));
@@ -141,6 +143,22 @@ const Messages = () => {
         return `${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}`;
     }
 
+    const deleteMessageConfirm = id => {
+        Swal.fire({
+            title: `Are you sure you want to delete this message?`,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                deleteMessage(id);
+            }
+          });
+    }
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -161,7 +179,7 @@ const Messages = () => {
                                                 <div>
                                                     <div 
                                                         className={clsx(classes.menuItem, { justifyContent: "space-between" })}
-                                                        onClick={() => selectMessage(item.message_id)}
+                                                        onClick={() => { markMessageAsSeen(item.message_id); selectMessage(item.message_id)}}
                                                     >
                                                         <div>
                                                             <div className={classes.bodyDiv}>
@@ -200,7 +218,19 @@ const Messages = () => {
                                             message_selected 
                                             ?
                                                 <>
-                                                    <Title>{ message_selected.message_title }</Title>
+                                                    <div className={classes.bodyDiv}>
+                                                        <Title>{ message_selected.message_title }</Title>
+                                                        <Tooltip title="Delete message" placement="top" arrow>
+                                                            <DeleteIcon className={classes.buttonIcon} onClick={() => deleteMessageConfirm(message_selected.message_id)}/>
+                                                        </Tooltip>
+                                                    </div>
+                                                    <div>
+                                                        Sent by <b>{message_selected.message_from}</b> - {formatDate(message_selected.message_date)}
+                                                    </div>
+                                                    <p className={classes.messageBody}>
+                                                        {message_selected.message_body}
+                                                        {/* {formatDate(message_selected.message_seen_date)} */}
+                                                    </p>
                                                 </>
                                             :
                                                 null

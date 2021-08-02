@@ -76,7 +76,7 @@ exports.userAuthenticated = async (req, res) => {
 
         res.json({
             ok: true,
-            user
+            data: user
         });
 
     } catch (error) {

@@ -156,7 +156,7 @@ const Meal = () => {
         category_name: null
     });
     const [ editMode, saveEditMode ] = useState(false);
-    const [ modal, setModal] = React.useState({
+    const [ modal, setModal] = useState({
         isOpen: false,
         image: null,
         alt: null

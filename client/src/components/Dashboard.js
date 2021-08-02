@@ -203,13 +203,13 @@ const Dashboard = () => {
                                 <div className={classes.flexColumn}>
                                     <div>
                                         <Typography component="p" variant="h6">
-                                            Sales: ${ todayOrders ? todayOrders.totalSales : 0}
+                                            Sales: ${ todayOrders.totalSales ? todayOrders.totalSales : 0}
                                         </Typography>
                                         <Typography component="p" variant="h6">
-                                            Orders: { todayOrders ? todayOrders.totalOrders : 0 }
+                                            Orders: { todayOrders.totalOrders ? todayOrders.totalOrders : 0 }
                                         </Typography>
                                         <Typography component="p" variant="h6">
-                                            Meals: { todayOrders ? todayOrders.total_meals : 0 }
+                                            Meals: { todayOrders.total_meals ? todayOrders.total_meals : 0 }
                                         </Typography>
                                     </div>
                                     <div className={classes.seeMore}>

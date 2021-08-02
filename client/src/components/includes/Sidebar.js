@@ -111,12 +111,12 @@ const Sidebar = ({username}) => {
 
                 <Divider/>
                 
-                <Link to="add-user" className={classes.links}>
+                <a href="add-user" className={classes.links}>
                     <ListItem button className={classes.ListItem}>
                         <PersonAddIcon/>
                         <Box p={1} type="paragraph" color="inherit">Add User</Box>
                     </ListItem>
-                </Link>
+                </a>
                 <Link to="/user-list" className={classes.links}>
                     <ListItem button className={classes.ListItem}>
                         <GroupIcon/>

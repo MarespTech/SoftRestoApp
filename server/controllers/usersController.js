@@ -7,7 +7,7 @@ const db = require('../config/db');
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const users = await Users.findAll({ where: { user_active: 1 }});
+        const users = await Users.findAll({ attributes: {exclude: ['user_password']}, where: { user_active: 1 }});
 
         res.json({
             ok: true,

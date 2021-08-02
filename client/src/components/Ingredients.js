@@ -181,7 +181,7 @@ const Ingredients = () => {
 
     
 
-    const { ingredient_name,ingredient_measure, ingredient_stock, ingredient_min_stock, ingredient_max_stock, ingredient_point_reorder, ingredient_image } = ingredient;
+    const { ingredient_name, ingredient_measure, ingredient_stock, ingredient_min_stock, ingredient_max_stock, ingredient_point_reorder, ingredient_image } = ingredient;
 
     const columns = [
         {
@@ -416,7 +416,7 @@ const Ingredients = () => {
 
                                         <Grid item xs={12} lg={6}>
                                             <TextField
-                                                label="Measure Unit"
+                                                label="Measure"
                                                 id="ingredient_measure"
                                                 name="ingredient_measure"
                                                 helperText="Required"

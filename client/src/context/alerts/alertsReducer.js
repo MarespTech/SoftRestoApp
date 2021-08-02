@@ -30,7 +30,7 @@ const AlertsReducer = (state, action) => {
         case ALERT_SELECT_MAIL:
             return {
                 ...state,
-                message_selected: state.messages.filter( message => message.message_id === action.payload)
+                message_selected: state.messages.filter( message => message.message_id === action.payload)[0]
             }
         case ALERT_MARK_MESSAGE:
             return {
