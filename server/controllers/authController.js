@@ -49,6 +49,7 @@ exports.authenticateUser = async (req, res) => {
                 ok: true,
                 message: "User authenticated succesfully",
                 user: {
+                    id: user.user_id,
                     username: user.user_username,
                     name: user.user_first_name + user.user_last_name,
                     photo: user.user_image,

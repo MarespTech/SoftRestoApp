@@ -15,13 +15,15 @@ const UserReducer = (state, action) => {
                 return {
                     ...state,
                     user_list: [...state.user_list, action.payload.user],
-                    message: action.payload.message
+                    message: action.payload.message,
+                    user_select: null
                 }
         case USER_EDIT:
             return {
                 ...state,
                 user_list: state.user_list.map( user => user.user_id === action.payload.user.user_id ? action.payload.user : user),
-                message: action.payload.message
+                message: action.payload.message,
+                user_select: null
             }
         case USER_DELETE:
             return {

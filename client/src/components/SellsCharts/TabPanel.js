@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Grid, Box } from "@material-ui/core";
 import { useTheme } from '@material-ui/core/styles';
-import { LineChart, Line, PieChart, Pie, XAxis, YAxis, Label, ResponsiveContainer, CartesianGrid, Tooltip, Legend  } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, CartesianGrid, Tooltip  } from 'recharts';
 import Title from '../includes/Title';
 import CustomPieChart from './CustomPieChart';
 

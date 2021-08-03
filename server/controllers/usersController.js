@@ -1,9 +1,9 @@
 const bcryptjs = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const { Op, QueryTypes } = require("sequelize");
+const { Op } = require("sequelize");
 const { Users } = require('../models/Users');
-const db = require('../config/db');
+const fs = require("fs")
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -114,52 +114,71 @@ exports.editUser = async (req, res) => {
     const user_id = req.params.id;
     const { user_email, user_password, user_password_2 } = req.body;
 
-    // Check if exist user with that id
-    let user = await Users.findOne({ where: { user_id } });
-    if(!user) {
-        return res.status(400).json({
-            ok: false,
-            message: `The user with id ${user_id} doesn't exist`
-        });
-    }
+    try {
+        // Check if exist user with that id
+        let user = await Users.findOne({ where: { user_id } });
+        if(!user) {
+            return res.status(400).json({
+                ok: false,
+                message: `The user with id ${user_id} doesn't exist`
+            });
+        }
 
-    // Check if user with new email exist
-    user = await Users.findOne({ 
-        where: { 
-            user_email,
-            user_id: {
-                [ Op.not ] : user_id
+        const oldImage = user.user_image;
+        const newImage = req.body.user_image;
+
+        if(oldImage !== newImage && oldImage !== "/uploads/no-image.jpg") {
+            try {
+                fs.unlinkSync(`../client/public/${oldImage}`);
+            } catch (error) {
+                console.log(error);
             }
         }
-    });
 
-    if(user) {
-        return res.status(400).json({
-            ok: false,
-            message: `The email '${user_email}' is already in use`
+        // Check if user with new email exist
+        user = await Users.findOne({ 
+            where: { 
+                user_email,
+                user_id: {
+                    [ Op.not ] : user_id
+                }
+            }
         });
-    }
 
-    // Check if passwords match
-    if(user_password !== user_password_2) {
-        return res.status(400).json({
-            ok: false,
-            message: "Passwords don't match"
+        if(user) {
+            return res.status(400).json({
+                ok: false,
+                message: `The email '${user_email}' is already in use`
+            });
+        }
+
+        // Check if passwords match
+        if(user_password !== user_password_2) {
+            return res.status(400).json({
+                ok: false,
+                message: "Passwords don't match"
+            });
+        }
+
+        // Hashear password
+        const salt = await bcryptjs.genSalt(10);
+        req.body.user_password = await bcryptjs.hash(user_password, salt);
+
+        await Users.update( req.body, {
+            where: { user_id }
         });
+
+        res.json({
+            ok: true,
+            message: "User edited successfully",
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: "There was a problem"
+        });
+        console.log(error);
     }
-
-    // Hashear password
-    const salt = await bcryptjs.genSalt(10);
-    req.body.user_password = await bcryptjs.hash(user_password, salt);
-
-    await Users.update( req.body, {
-        where: { user_id }
-    });
-
-    res.json({
-        ok: true,
-        message: "User edited successfully",
-    });
 
 
 }

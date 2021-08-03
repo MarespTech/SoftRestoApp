@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2021 at 12:56 AM
+-- Generation Time: Aug 04, 2021 at 12:31 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -43,7 +43,8 @@ INSERT INTO `categories` (`category_id`, `category_name`, `category_active`) VAL
 (5, 'Breakfast', 1),
 (6, 'Meals', 1),
 (7, 'Dinners', 1),
-(8, 'Drinks', 1);
+(8, 'Drinks', 1),
+(10, 'Brunch', 1);
 
 -- --------------------------------------------------------
 
@@ -68,9 +69,9 @@ CREATE TABLE `ingredients` (
 --
 
 INSERT INTO `ingredients` (`ingredient_id`, `ingredient_name`, `ingredient_measure`, `ingredient_stock`, `ingredient_min_stock`, `ingredient_max_stock`, `ingredient_point_reorder`, `ingredient_image`, `ingredient_active`) VALUES
-(1, 'Tortillas', 'Package', 3, 2, 8, 2, 'uploads/ingredients/653-tortillas-maiz.jpg', 1),
+(1, 'Tortillas', 'Package', 2, 2, 8, 2, 'uploads/ingredients/653-tortillas-maiz.jpg', 1),
 (2, 'Aceite', 'Bottle', 20, 10, 50, 15, 'uploads/ingredients/257-aceite.jpg', 1),
-(3, 'Zanahoria', 'Pz', 5, 5, 50, 5, 'uploads/ingredients/802-download.jpg', 1);
+(3, 'Zanahoria', 'Pz', 6, 5, 50, 5, 'uploads/ingredients/802-download.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -102,7 +103,7 @@ INSERT INTO `meals` (`meal_id`, `meal_name`, `meal_cost`, `meal_description`, `m
 (5, 'Chilaquiles c/pollo', 110, 'Totopos artesanales banados en salsa roja o verde hecha en casa acompanados con pollo y frijoles', 5, 0, 4.5, 3, '', 'uploads/meals/554-chilaquiles-pollo.jpg', 0, 1),
 (11, 'Cheeseburger', 110, 'Simple and traditional cheeseburger', 6, 0, 0, 0, '', 'uploads/meals/951-cheeseburger.jpg', 0, 1),
 (12, 'Spaghetti Bolognesa', 100, 'Traditional Italian Spaghetti with meatballs', 6, 0, 0, 0, '', 'uploads/meals/730-Weeknight-Spaghetti-Bolognese.jpg', 0, 1),
-(13, 'Omelette', 75, 'Omelette with cheese and vegetables', 5, 0, 0, 0, '', 'uploads/meals/504-omelette.jpg', 0, 1),
+(13, 'Omelette', 75, 'Omelette with cheese and vegetables', 5, 0, 0, 0, '', 'uploads/meals/504-omelette.jpg', 0, 0),
 (14, 'Scrambled Eggs', 50, 'Scrambled Eggs with bread', 5, 0, 0, 0, '', 'uploads/meals/628-scrambled-eggs.jpg', 0, 1),
 (15, 'Milkshake', 55, 'Milkshakes: Chocolate, Vanilla, Strawberries', 8, 0, 0, 0, '', 'uploads/meals/206-milkshake.jpg', 0, 1),
 (16, 'Milk', 20, 'Glass of milk', 8, 0, 0, 0, '', 'uploads/meals/785-milk.jpg', 0, 1),
@@ -121,9 +122,9 @@ CREATE TABLE `messages` (
   `message_title` varchar(100) NOT NULL,
   `message_body` text NOT NULL,
   `message_from` varchar(150) NOT NULL,
-  `message_date` datetime NOT NULL,
+  `message_date` datetime NOT NULL COMMENT 'UTC Date',
   `message_seen` tinyint(1) NOT NULL DEFAULT 0,
-  `message_seen_date` datetime NOT NULL,
+  `message_seen_date` datetime NOT NULL COMMENT 'UTC Date',
   `message_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -132,7 +133,9 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`message_id`, `message_title`, `message_body`, `message_from`, `message_date`, `message_seen`, `message_seen_date`, `message_active`) VALUES
-(1, 'a', 'a', 'a', '2021-07-28 00:23:13', 0, '2021-07-28 00:23:13', 1);
+(1, 'Example Title Juan', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget fermentum purus, ac bibendum felis. Donec ante lorem, interdum at malesuada non, ornare ornare dolor. Nam dignissim ullamcorper turpis sit amet congue. Integer et felis rhoncus, tincidunt leo non, sagittis mauris. Nulla libero urna, pretium a hendrerit nec, venenatis non elit. Donec eu felis pellentesque, eleifend urna at, lobortis massa. Curabitur a malesuada est. Aliquam vulputate enim mi, vel pulvinar massa molestie et. Aliquam viverra massa ut orci porttitor, vel dictum lectus mollis. Phasellus eleifend at metus ac hendrerit.', 'Juan', '2021-07-28 05:23:13', 1, '2021-08-02 16:31:00', 1),
+(2, 'Example Title Supplier', 'Maecenas efficitur aliquam est id ullamcorper. In euismod at velit in tempor. Nulla vulputate ornare blandit. Praesent molestie massa velit. Fusce consequat tristique sagittis. Donec ullamcorper nec enim eu vehicula. Morbi imperdiet justo mi, in luctus ex accumsan id. Curabitur sollicitudin fringilla ultricies. Sed a est sapien. Sed aliquet ante ut facilisis efficitur. Nunc tempus enim vel sem rutrum convallis.', 'Meat Supplier', '2021-07-28 00:23:13', 1, '2021-08-02 16:31:00', 1),
+(3, 'Example Title Client', 'Praesent molestie velit magna, vitae eleifend dolor tempus sit amet. Donec et tempus justo. Praesent ut lectus mauris. Phasellus accumsan nisl eu sapien accumsan, vel faucibus massa sollicitudin. Morbi id condimentum mi. Vestibulum lacinia pretium lacus, at tincidunt nisi pharetra eget. Sed egestas tellus metus, vel dignissim est iaculis non.\n\nProin erat est, gravida ac ultricies luctus, dapibus pellentesque lacus. Ut porttitor facilisis nisl, pharetra molestie arcu placerat sed. Morbi pretium eros non augue aliquet, quis accumsan sapien tempus. Duis suscipit, dui eget faucibus cursus, arcu mauris pretium dui, eget bibendum sem nisi ac libero. Sed pharetra feugiat porta. Sed dignissim sit amet ipsum sit amet mollis. Curabitur auctor luctus velit. Vivamus arcu dolor, consequat vitae lacus at, pretium pulvinar orci.', 'Client', '2021-07-28 08:23:13', 1, '2021-08-02 16:31:00', 1);
 
 -- --------------------------------------------------------
 
@@ -217,7 +220,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_username`, `user_password`, `user_email`, `user_first_name`, `user_last_name`, `user_isadmin`, `user_image`, `user_active`) VALUES
-(1, 'mespericueta', '$2a$10$pPejSae/BDr0Md8rFRD6rOV7m8NvfU1aMNf2yjEe.g944oWRcLaTO', 'martin.m.espericueta@gmail.com', 'Martin', 'Espericueta', 1, '', 1);
+(1, 'mespericueta', '$2a$10$MSHGe6cX6hSvNvi5LhR5OeZOVkKCHAtpIrN8Le3buRdlWya9hlDr6', 'martin.m.espericueta@gmail.com', 'Martin', 'Espericueta', 1, 'uploads/users/256-firefox_2018-07-10_07-50-11.png', 1),
+(2, 'jgomez', '$2a$10$pPejSae/BDr0Md8rFRD6rOV7m8NvfU1aMNf2yjEe.g944oWRcLaTO', 'jgomez@gmail.com', 'Jose', 'Gomez', 0, 'uploads/users/no-user-image.gif', 1),
+(3, 'louane', '$2a$10$VLrACOcoX1RHRL0kMeo/h.w.DPz0IPf5vhV9caKrUQgDoJdXKYcE.', 'apeichert@gmail.com', 'Anne', 'Peichert', 1, 'uploads/users/985-Louane-Emera.jpg', 1);
 
 --
 -- Indexes for dumped tables
@@ -275,7 +280,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ingredients`
@@ -293,7 +298,7 @@ ALTER TABLE `meals`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders_historial`
@@ -311,7 +316,7 @@ ALTER TABLE `orders_meals`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

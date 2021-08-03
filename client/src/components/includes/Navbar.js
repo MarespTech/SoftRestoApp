@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { AppBar, Toolbar, IconButton, Typography, Badge, 
          MenuItem, Menu, Avatar, Divider } from "@material-ui/core";
 import { lightBlue, green } from '@material-ui/core/colors';
@@ -14,6 +14,8 @@ import MobileSidebar from './MobileSidebar';
 import CustomMenuItem from './CustomMenuItem';
 
 import AlertsContext from '../../context/alerts/alertsContext';
+import UserContext from '../../context/user/userContext';
+import AuthContext from '../../context/auth/authContext';
 
 const useStyles = makeStyles((theme) => ({
     customNavbar: {
@@ -68,9 +70,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
-    const alertsContext = useContext(AlertsContext);
+    const history = useHistory();
 
-    const { notifications_navbar, messages_navbar, getNotificationsForNavbar, markMessageAsSeen } =alertsContext;
+    const alertsContext = useContext(AlertsContext);
+    const userContext = useContext(UserContext);
+    const authContext = useContext(AuthContext);
+
+    const { notifications_navbar, messages_navbar, getNotificationsForNavbar, markMessageAsSeen } = alertsContext;
+    const { selectUser } = userContext;
+    const { user, logout } = authContext;
+
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -82,8 +91,9 @@ const Navbar = () => {
         getNotificationsForNavbar();
     }, []);
     
-    const logOut = () => {
-        console.log("Log Out");
+    const editProfile = () => {
+        selectUser(user.user_id);
+        history.push("/edit-user");
     }
 
     return (
@@ -238,10 +248,8 @@ const Navbar = () => {
                     open={isMenuOpen}
                     onClose={() => setIsMenuOpen(false)}
                 >
-                    <MenuItem>
-                        <Link to="/my-profile" className={classes.links}>Profile</Link>
-                    </MenuItem>
-                    <MenuItem onClick={logOut}>Log Out</MenuItem>
+                    <MenuItem onClick={editProfile}>Profile</MenuItem>
+                    <MenuItem onClick={logout}>Log Out</MenuItem>
                 </Menu>
                 
                 <MobileSidebar 

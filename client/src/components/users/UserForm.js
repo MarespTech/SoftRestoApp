@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import  { useHistory  } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Container, Grid, Paper, Button, Avatar, 
@@ -106,6 +107,7 @@ const useStyles = makeStyles(theme => ({
 
 const UserForm = () => {
     const classes = useStyles();
+    const history = useHistory();
     const userContext = useContext(UserContext);
 
     const { user_select, message, addUser, editUser, unselectUser, cleanError } = userContext;
@@ -128,7 +130,13 @@ const UserForm = () => {
     const { user_username, user_email, user_password, user_password_2, user_first_name, user_last_name, user_image } = User;
 
     useEffect(() => {
-        if(window.location.pathname === "/add-user" && user_select) { 
+
+        if(user_select && window.location.pathname !== "/add-user") {
+            saveEditMode(true);
+            saveUser(user_select);
+
+            if(user_select.user_isadmin === 1) setChecked(true);
+        } else {
             unselectUser();
             saveUser({
                 user_username: '',
@@ -143,19 +151,15 @@ const UserForm = () => {
             })
         }
 
-        if(user_select) {
-            saveEditMode(true);
-            saveUser(user_select);
-
-            if(user_select.user_isadmin === 1) setChecked(true);
-        }
-
     }, []);
 
     useEffect(() => {
         if(message) {
-            Swal.fire(message.title, message.message, message.type);
-            cleanError();   
+            Swal.fire(message.title, message.message, message.type)
+            .then(() => {
+                cleanError();   
+                history.push("/user-list");
+            });
         }
     }, [message]);
 
@@ -229,7 +233,7 @@ const UserForm = () => {
                                                 helperText="Required"
                                                 value={user_username}
                                                 onChange={handleChange}
-                                                readonly={user_select ? true : false}
+                                                readOnly={user_select ? true : false}
                                             />
                                         </Grid>
 
