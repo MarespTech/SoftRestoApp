@@ -12,6 +12,7 @@ import UserState from './context/user/userState';
 import PrivateRoute from './components/routes/PrivateRoute';
 
 import Login from './components/Login';
+import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import AddOrder from './components/AddOrder';
 import Categories from "./components/Categories";
@@ -41,6 +42,7 @@ function App() {
                   <Router>
                     <Switch>
                       <Route exact path={"/"} component={Login}/>
+                      <Route exact path={"/register"} component={Register}/>
                       <PrivateRoute exact path={"/dashboard"} component={Dashboard}/>
                       <PrivateRoute exact path={"/add-order"} component={AddOrder}/>
                       <PrivateRoute exact path={"/categories"} component={Categories}/>
