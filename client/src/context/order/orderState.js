@@ -18,7 +18,8 @@ const OrderState = props => {
         todayOrders: [],
         chartDashboard: [],
         ordersHistorial: [],
-        charts: []
+        charts: [],
+        message: null
     }
 
     const [ state, dispatch ] = useReducer(OrderReducer, initialState);
@@ -85,6 +86,51 @@ const OrderState = props => {
         }
     }
 
+    const addOrder = async ( orders, payment ) => {
+        const order = {
+            order_historial_payment: payment,
+            order_historial_status: 1,
+            order_historial_amount: 0,
+            order_meals: []
+        }
+        var total = 0;
+        let meals = [];
+        
+        orders.forEach( order => {
+            total += order.quantity * order.meal.meal_cost;
+            meals.push({
+                order_meal_qty: order.quantity,
+                order_meal: order.meal.meal_id
+            });
+        });
+
+        order.order_historial_amount = total;
+        order.order_meals = meals;
+
+        try {
+            const result = await axiosClient.post("/api/orders", order);
+            dispatch({
+                type: ERROR_CREATE,
+                payload: {
+                    type: "success",
+                    title: "Order added",
+                    message: result.data.message
+                }
+            });
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: ERROR_CREATE,
+                payload: {
+                    message: error.response.data.message,
+                    type: "error",
+                    title: "Error"
+                }
+            });
+        }
+
+    }
+
     const cleanError = () => {
         dispatch({
             type: ERROR_CLEAN,
@@ -100,9 +146,11 @@ const OrderState = props => {
                 chartDashboard: state.chartDashboard,
                 ordersHistorial: state.ordersHistorial,
                 charts: state.charts,
+                message: state.message,
                 getDashboardData,
                 getHistorialOrders,
                 getCharts,
+                addOrder,
                 cleanError
             }}
         >

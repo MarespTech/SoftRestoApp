@@ -161,7 +161,10 @@ const Navbar = () => {
                             onClick={e => {setIsMenuOpen(e.currentTarget); setAnchorEl(e.currentTarget);}}
                             color="inherit"
                         >
-                            <Avatar className={classes.green}>U</Avatar>
+                            <Avatar 
+                                className={classes.green}
+                                src={ user ? user.user_image : ""}
+                            />
                         </IconButton>
                         
                     </div>
@@ -255,7 +258,7 @@ const Navbar = () => {
                 <MobileSidebar 
                     isSidebarOpen={isSidebarOpen}
                     setIsSidebarOpen={setIsSidebarOpen}
-                    username="User"
+                    username={ user ? `${user.user_first_name} ${user.user_last_name}` : "User"}
                 />
             </AppBar>
             

@@ -281,7 +281,7 @@ const Meal = () => {
 
     const options = {
         responsive: "standard",
-        filterType: 'checkbox',
+        filterType: 'multiselect',
         fixedHeader: true,
         selectableRows: "single",
         selectableRowsOnClick: true,

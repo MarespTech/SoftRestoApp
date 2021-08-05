@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Typography, Drawer, Container, Box, List, ListItem, Divider } from "@material-ui/core";
 
 import HomeIcon from '@material-ui/icons/Home';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import AppsIcon from '@material-ui/icons/Apps';
 import KitchenIcon from '@material-ui/icons/Kitchen';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
@@ -65,6 +66,12 @@ const MobileSidebar = ({username, isSidebarOpen, setIsSidebarOpen}) => {
                             <ListItem button className={classes.ListItem}>
                                 <HomeIcon/>
                                     <Box p={1} type="paragraph" color="inherit">Home</Box>
+                            </ListItem>
+                        </Link>
+                        <Link to="/add-order" className={classes.links}>
+                            <ListItem button className={classes.ListItem}>
+                                <ListAltIcon/>
+                                    <Box p={1} type="paragraph" color="inherit">New Order</Box>
                             </ListItem>
                         </Link>
                         <Link to="/categories" className={classes.links}>

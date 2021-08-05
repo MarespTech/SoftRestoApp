@@ -110,7 +110,7 @@ exports.getDashboardData = async ( req, res ) => {
         orders.forEach( order => {
             const formatDate = new Date(order.order_historial_date);
             const date = `${formatDate.getDate()}/${formatDate.getMonth() + 1}/${formatDate.getFullYear()}`;
-            const time = `${formatDate.getHours()}:${formatDate.getMinutes()}`;
+            const time = `${formatDate.getHours()}:${formatDate.getMinutes() > 9 ? formatDate.getMinutes() : `0${formatDate.getMinutes()}`}`;
 
             const mealsObj = meals.filter( meal => meal.order_meal_historial === order.order_historial_id);
             const mealsStr = [];
@@ -184,7 +184,7 @@ exports.getHistorialOrders = async ( req, res ) => {
             
             const formatDate = new Date(order.order_historial_date);
             const date = `${formatDate.getDate()}/${formatDate.getMonth() + 1}/${formatDate.getFullYear()}`;
-            const time = `${formatDate.getHours()}:${formatDate.getMinutes()}`;
+            const time = `${formatDate.getHours()}:${formatDate.getMinutes() > 9 ? formatDate.getMinutes() : `0${formatDate.getMinutes()}`}`;
 
             const mealsObj = meals.filter( meal => meal.order_meal_historial === order.order_historial_id);
             const mealsStr = [];
@@ -394,7 +394,10 @@ exports.addNewOrder = async ( req, res ) => {
 
         const { order_meals } = req.body;
 
-        req.body.order_historial_date = todayFormat;
+        req.body.order_historial_date = today;
+
+        console.log(req.body)
+
         const order = await Orders_historial.create(req.body);
         const { order_historial_id } = order;
 
@@ -410,11 +413,11 @@ exports.addNewOrder = async ( req, res ) => {
     
             res.json({
                 ok: true,
-                data: {
-                    order,
-                    meals: orderMeals
-                },
-                message: "Order created successfully"
+                // data: {
+                //     order,
+                //     meals: orderMeals
+                // },
+                message: "Order added successfully"
             });
         });
 

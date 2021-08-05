@@ -2,6 +2,9 @@ import {
     ORDER_GET_HISTORIAL,
     ORDER_GET_DASHBOARD_DATA,
     ORDER_GET_CHART_DATA,
+    ORDER_ADD,
+    ERROR_CREATE,
+    ERROR_CLEAN
 } from "../../types";
 
 const orderReducer = (state, action) => {
@@ -24,6 +27,16 @@ const orderReducer = (state, action) => {
             return {
                 ...state,
                 charts: action.payload
+            }
+        case ERROR_CREATE:
+            return {
+                ...state,
+                message: action.payload
+            }
+        case ERROR_CLEAN:
+            return {
+                ...state,
+                message: null
             }
         default: 
             return state;

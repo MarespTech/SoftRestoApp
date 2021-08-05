@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
 import { Typography, Drawer, Box, List, ListItem, Divider } from "@material-ui/core";
 
 import HomeIcon from '@material-ui/icons/Home';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import AppsIcon from '@material-ui/icons/Apps';
 import KitchenIcon from '@material-ui/icons/Kitchen';
 import LocalDiningIcon from '@material-ui/icons/LocalDining';
@@ -13,6 +14,8 @@ import ListIcon from '@material-ui/icons/List';
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupIcon from '@material-ui/icons/Group';
+
+import AuthContext from '../../context/auth/authContext';
 
 
 const useStyles = makeStyles((theme) => ({    
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
-        width: 200,
+        width: 250,
         display: 'none',
         [theme.breakpoints.up('md')]: {
             display: 'flex',
@@ -42,8 +45,10 @@ const useStyles = makeStyles((theme) => ({
       
   }));
 
-const Sidebar = ({username}) => {
+const Sidebar = () => {
     const classes = useStyles();
+    const authContext = useContext(AuthContext);
+    const { user } = authContext;
 
     return ( 
 
@@ -64,7 +69,7 @@ const Sidebar = ({username}) => {
             >
                 <Typography>
                     <Box className={classes.titleSidebar}>
-                        Hello {username}
+                        Hello { user ? `${user.user_first_name} ${user.user_last_name}` : "User" }
                     </Box>
                 </Typography>
             </Box>
@@ -74,6 +79,12 @@ const Sidebar = ({username}) => {
                     <ListItem button className={classes.ListItem}>
                         <HomeIcon/>
                             <Box p={1} type="paragraph" color="inherit">Home</Box>
+                    </ListItem>
+                </Link>
+                <Link to="/add-order" className={classes.links}>
+                    <ListItem button className={classes.ListItem}>
+                        <ListAltIcon/>
+                            <Box p={1} type="paragraph" color="inherit">New Order</Box>
                     </ListItem>
                 </Link>
                 <Link to="/categories" className={classes.links}>

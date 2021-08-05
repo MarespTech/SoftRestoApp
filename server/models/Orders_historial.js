@@ -8,7 +8,11 @@ exports.Orders_historial = db.define("orders_historial", {
         autoIncrement: true
     },
     order_historial_date: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
+    },
+    order_historial_status: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     },
     order_historial_payment: {
         type: Sequelize.STRING

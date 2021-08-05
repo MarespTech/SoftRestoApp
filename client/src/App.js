@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter  as Router, Route, Switch  } from 'react-router-dom';
+import { HashRouter  as Router, Route, Switch  } from 'react-router-dom';
 
 import AuthState from './context/auth/authState';
 import OrderState from './context/order/orderState';
@@ -13,6 +13,7 @@ import PrivateRoute from './components/routes/PrivateRoute';
 
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import AddOrder from './components/AddOrder';
 import Categories from "./components/Categories";
 import Ingredients from "./components/Ingredients";
 import Meals from "./components/Meals";
@@ -41,6 +42,7 @@ function App() {
                     <Switch>
                       <Route exact path={"/"} component={Login}/>
                       <PrivateRoute exact path={"/dashboard"} component={Dashboard}/>
+                      <PrivateRoute exact path={"/add-order"} component={AddOrder}/>
                       <PrivateRoute exact path={"/categories"} component={Categories}/>
                       <PrivateRoute exact path={"/ingredients"} component={Ingredients}/>
                       <PrivateRoute exact path={"/meals"} component={Meals}/>

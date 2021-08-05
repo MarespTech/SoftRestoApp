@@ -25,6 +25,7 @@ const AuthReducer = (state, action) => {
                 loading: false
             }
         case AUTH_LOGOUT:
+        case ERROR_CREATE:
             localStorage.removeItem('token');
             return {
                 ...state,
@@ -32,11 +33,7 @@ const AuthReducer = (state, action) => {
                 user: null,
                 authenticate: false,
                 loading: false,
-                isAdmin: 0
-            }
-        case ERROR_CREATE:
-            return {
-                ...state,
+                isAdmin: 0,
                 message: action.payload
             }
         case ERROR_CLEAN:
