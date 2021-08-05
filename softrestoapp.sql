@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2021 at 12:31 AM
+-- Generation Time: Aug 06, 2021 at 12:24 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -42,9 +42,9 @@ INSERT INTO `categories` (`category_id`, `category_name`, `category_active`) VAL
 (4, 'Salads', 1),
 (5, 'Breakfast', 1),
 (6, 'Meals', 1),
-(7, 'Dinners', 1),
+(7, 'Dinners', 0),
 (8, 'Drinks', 1),
-(10, 'Brunch', 1);
+(10, 'Brunch', 0);
 
 -- --------------------------------------------------------
 
@@ -109,7 +109,11 @@ INSERT INTO `meals` (`meal_id`, `meal_name`, `meal_cost`, `meal_description`, `m
 (16, 'Milk', 20, 'Glass of milk', 8, 0, 0, 0, '', 'uploads/meals/785-milk.jpg', 0, 1),
 (17, 'Ice Coffee', 30, 'Ice coffee', 8, 0, 0, 0, '', 'uploads/meals/278-ice-coffee.jpg', 0, 1),
 (18, 'Coffee', 25, 'Refill includes', 8, 0, 0, 0, '', 'uploads/meals/8-coffee.jpg', 0, 1),
-(19, 'Orange Juice', 15, 'Homemade orange juice', 8, 0, 0, 0, '', 'uploads/meals/917-orange-juice.jpg', 0, 1);
+(19, 'Orange Juice', 15, 'Homemade orange juice', 8, 0, 0, 0, '', 'uploads/meals/917-orange-juice.jpg', 0, 1),
+(20, 'Boneless', 85, 'Ricas Boneless caseras, elige tu salsa preferida ( Chipotle, Mango-Habanero, Bufalo, Teriyaki)', 3, 0, 0, 0, '', 'uploads/meals/415-boneless.jpg', 0, 1),
+(21, 'Nachos con carne', 100, 'Nachos con carne para dos personas', 3, 0, 0, 0, '', 'uploads/meals/359-nachos.jpg', 0, 1),
+(22, 'Ensalada de la casa', 90, 'Rica ensalada con aderezo de la casa', 4, 0, 0, 0, '', 'uploads/meals/735-ensalada.jpg', 0, 1),
+(23, 'Ensalada con pollo', 60, 'Ensalada con fajitas de pollo a la parrilla', 4, 0, 0, 0, '', 'uploads/meals/0-deberias-comer-ensalada-para-desayunar.jpg', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -145,7 +149,8 @@ INSERT INTO `messages` (`message_id`, `message_title`, `message_body`, `message_
 
 CREATE TABLE `orders_historial` (
   `order_historial_id` int(11) NOT NULL,
-  `order_historial_date` datetime NOT NULL,
+  `order_historial_date` datetime NOT NULL COMMENT 'UTC Format',
+  `order_historial_status` tinyint(1) NOT NULL DEFAULT 0,
   `order_historial_payment` varchar(50) NOT NULL,
   `order_historial_amount` double NOT NULL,
   `order_historial_active` tinyint(1) NOT NULL DEFAULT 1
@@ -155,12 +160,10 @@ CREATE TABLE `orders_historial` (
 -- Dumping data for table `orders_historial`
 --
 
-INSERT INTO `orders_historial` (`order_historial_id`, `order_historial_date`, `order_historial_payment`, `order_historial_amount`, `order_historial_active`) VALUES
-(4, '2021-07-28 15:34:34', 'Money', 300, 1),
-(5, '2021-07-27 16:40:52', 'Money', 200, 1),
-(6, '2021-07-27 17:42:45', 'Money', 450, 1),
-(7, '2021-07-27 19:47:37', 'Money', 120, 1),
-(9, '2021-07-27 15:34:34', 'Money', 300, 1);
+INSERT INTO `orders_historial` (`order_historial_id`, `order_historial_date`, `order_historial_status`, `order_historial_payment`, `order_historial_amount`, `order_historial_active`) VALUES
+(3, '2021-08-05 14:53:00', 1, 'money', 350, 1),
+(4, '2021-08-05 22:05:08', 1, 'money', 170, 1),
+(5, '2021-08-05 22:17:00', 1, 'Debit Card', 425, 1);
 
 -- --------------------------------------------------------
 
@@ -180,22 +183,23 @@ CREATE TABLE `orders_meals` (
 --
 
 INSERT INTO `orders_meals` (`order_meal_id`, `order_meal_historial`, `order_meal_qty`, `order_meal`) VALUES
-(13, 4, 3, 5),
-(14, 4, 1, 14),
-(15, 4, 3, 18),
-(16, 4, 1, 19),
-(17, 5, 2, 5),
-(18, 5, 1, 14),
-(19, 5, 1, 18),
-(20, 5, 1, 19),
-(21, 6, 1, 5),
-(22, 6, 1, 14),
-(23, 6, 1, 18),
-(24, 6, 1, 19),
-(25, 7, 1, 5),
-(26, 7, 1, 14),
-(27, 7, 1, 18),
-(28, 7, 1, 19);
+(1, 1, 2, 20),
+(2, 1, 1, 21),
+(3, 1, 2, 19),
+(4, 2, 1, 22),
+(5, 2, 1, 23),
+(6, 2, 1, 11),
+(7, 2, 2, 19),
+(8, 2, 1, 17),
+(9, 3, 2, 20),
+(10, 3, 2, 23),
+(11, 3, 2, 17),
+(12, 4, 2, 20),
+(13, 5, 2, 11),
+(14, 5, 1, 12),
+(15, 5, 1, 19),
+(16, 5, 1, 17),
+(17, 5, 1, 23);
 
 -- --------------------------------------------------------
 
@@ -292,7 +296,7 @@ ALTER TABLE `ingredients`
 -- AUTO_INCREMENT for table `meals`
 --
 ALTER TABLE `meals`
-  MODIFY `meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -304,13 +308,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders_historial`
 --
 ALTER TABLE `orders_historial`
-  MODIFY `order_historial_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `order_historial_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `orders_meals`
 --
 ALTER TABLE `orders_meals`
-  MODIFY `order_meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `order_meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `users`
