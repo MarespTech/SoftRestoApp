@@ -122,7 +122,7 @@ const Sidebar = () => {
 
                 <Divider/>
                 
-                <a href="add-user" className={classes.links}>
+                <a href="#/add-user" className={classes.links}>
                     <ListItem button className={classes.ListItem}>
                         <PersonAddIcon/>
                         <Box p={1} type="paragraph" color="inherit">Add User</Box>

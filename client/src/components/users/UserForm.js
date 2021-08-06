@@ -166,11 +166,11 @@ const UserForm = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        if(user_username.trim === '') return Swal.fire("Error", "The username is required", "error");
-        if(user_email.trim === '') return Swal.fire("Error", "The email is required", "error");
-        if(user_first_name.trim === '' || user_last_name.trim === '') return Swal.fire("Error", "Your name is required", "error");
-        if(user_password.trim === '') return Swal.fire("Error", "The password is required", "error");
-        if(user_password_2.trim === '') return Swal.fire("Error", "You have to repeat your password", "error");
+        if(user_username.trim() === '') return Swal.fire("Error", "The username is required", "error");
+        if(user_email.trim() === '') return Swal.fire("Error", "The email is required", "error");
+        if(user_first_name.trim() === '' || user_last_name.trim() === '') return Swal.fire("Error", "Your name is required", "error");
+        if(user_password.trim() === '') return Swal.fire("Error", "The password is required", "error");
+        if(user_password_2.trim() === '') return Swal.fire("Error", "You have to repeat your password", "error");
         if(user_password !== user_password_2) return Swal.fire("Error", "Passwords don't match", "error");
 
         if(!editMode) addUser(User);
@@ -273,6 +273,7 @@ const UserForm = () => {
                                         <Grid item xs={12} md={4}>
                                             <TextField
                                                 label="Password"
+                                                type="password"
                                                 id="user_password"
                                                 name="user_password"
                                                 helperText="Required"
@@ -284,6 +285,7 @@ const UserForm = () => {
                                         <Grid item xs={12} md={4}>
                                             <TextField
                                                 label="Repeat Password"
+                                                type="password"
                                                 id="user_password_2"
                                                 name="user_password_2"
                                                 helperText="Required"

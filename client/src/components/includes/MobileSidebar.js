@@ -109,7 +109,7 @@ const MobileSidebar = ({username, isSidebarOpen, setIsSidebarOpen}) => {
 
                         <Divider/>
                         
-                        <Link to="add-user" className={classes.links}>
+                        <Link to="/add-user" className={classes.links}>
                             <ListItem button className={classes.ListItem}>
                                 <PersonAddIcon/>
                                 <Box p={1} type="paragraph" color="inherit">Add User</Box>

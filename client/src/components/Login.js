@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
-
+import { Link } from "react-router-dom";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -30,8 +30,8 @@ const useStyles = makeStyles( theme => ({
     },
     paper: {
         padding: theme.spacing(2),
-        width: "60%",
-        height: "350px",
+        width: "90%",
+        height: "450px",
         display: 'flex',
         overflow: 'hidden',
         flexDirection: 'column',
@@ -39,7 +39,8 @@ const useStyles = makeStyles( theme => ({
         borderRadius: 15,
 
         [theme.breakpoints.up('md')]: {
-            height: "500px"
+            height: "500px",
+            width: "60%"
         }
     },
     title: {
@@ -53,14 +54,13 @@ const useStyles = makeStyles( theme => ({
     },
     formBox: {
         width: "100%",
-        height: "50%",
+        height: "75%",
         backgroundColor: "rgba(255,255,255, 0.7)",
         margin: "0 auto",
         padding: "10px",
         borderRadius: 10,
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
             width: "65%",
-            height: "70%",
             padding: "45px 60px 15px",
         }
     },
@@ -89,6 +89,30 @@ const useStyles = makeStyles( theme => ({
             backgroundColor: blue[600]
         }
     },
+    register: {
+        textAlign: "center",
+        fontWeight: "bold",
+        marginTop: 10,
+
+        [theme.breakpoints.up("md")]: {
+            marginTop: 20
+        },
+
+        "& a": {
+            textDecoration: "none",
+            color: blue[700]
+        }
+    },
+    forgotPassword: {
+        textAlign: "right",
+        fontWeight: "bold",
+        marginTop: 3,
+
+        "& a": {
+            textDecoration: "none",
+            color: blue[700]
+        }
+    }
 }));
 
 const Login = props => {
@@ -164,6 +188,10 @@ const Login = props => {
                                 label="Password" 
                                 variant="outlined"
                             />
+                            <div className={classes.forgotPassword}>
+                                <Link to="/">Forgot your password?</Link>
+                                {/* <Link to="/forgotPassword">Forgot your password?</Link> */}
+                            </div>
                         </Grid>
                         <Grid item xs={12}>
                         <Button 
@@ -177,7 +205,9 @@ const Login = props => {
                         </Grid>
                     </Grid>
                     
-                    
+                <div className={classes.register}>
+                    <span>You don't have account? <Link to="/register">Create now!</Link></span>
+                </div>
                 </form>
             </Paper>
         </div>    

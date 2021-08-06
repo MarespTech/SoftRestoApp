@@ -244,6 +244,7 @@ const AddOrder = () => {
                                     onChange={handleChange}
                                     indicatorColor="primary"
                                     textColor="primary"
+                                    variant="scrollable"
                                     centered
                                 >
                                     { category_list.map( category => (
